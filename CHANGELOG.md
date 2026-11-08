@@ -160,9 +160,8 @@ Made test files with tricky rows, ran them through the app, and wrote down what 
   - 32 + 22 = 54.
 - **Added `ARCHITECTURE.md`,** a step-by-step description of how the app works.
 
----
+## Phase 10: Shipping (8 Nov, night)
 
-## Still to do
-
-- A native speaker to check the Tamil, Kannada and Marathi messages.
-- A GitHub repository and a Streamlit Cloud link.
+- **Code on GitHub:** [mananmehta3/ActivateIQ_Razorpay](https://github.com/mananmehta3/ActivateIQ_Razorpay). Local files (added applications, decisions, confirmed reasons) are left out by `.gitignore`.
+- **Live app on Streamlit Community Cloud,** deployed from the GitHub repository. The saved AI model answers (`llm_answers.json`) are in the repository, so the live app needs no API key and costs nothing to run.
+- **Animated explainer video** made for the pitch. It introduces the problem and how ActivateIQ works.
