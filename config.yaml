@@ -1,0 +1,26 @@
+# ActivateIQ configuration. Every threshold here is an assumption, not a fact from the data.
+data_path: data/Buildathon_Student_Data_Pack.xlsx
+
+recoverability:
+  max_days_inactive: 30      # fixable AND inactive <= this  -> recoverable
+  max_attempts: 3            # fixable AND attempts < this   -> recoverable
+
+classifier:
+  confidence_cutoff: 0.75    # inferred diagnoses below this go to "Clarify" (human)
+  use_llm_fallback: true     # AI model reads message-only rejections as a second reader; disagreement -> person
+  llm_provider: claude       # claude (key: ANTHROPIC_API_KEY) or gemini (key: GEMINI_API_KEY)
+  llm_model: claude-opus-5-5 # answers are saved in llm_answers.json, so each message is paid for once
+
+priority:
+  evidence_weight: {explicit: 1.0, inferred: 0.7}
+  decay_days: 30             # P(recover) falls as exp(-days / decay_days)
+  attempt_penalty: 0.85      # x0.85 for every attempt after the first
+  support_bonus: 0.10        # +10% if the merchant has contacted support (engaged)
+  effort_weight: 0.25        # priority / (1 + effort_weight * (days_to_fix - 1))
+
+actions:
+  ops_call_capacity: 10      # top N recoverable cases by priority get an ops call
+
+followup:
+  schedule_days: [0, 3, 7]
+  max_nudges: 3

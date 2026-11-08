@@ -1,0 +1,146 @@
+{
+ "claude-opus-5-5|Account name mismatch. Please provide bank letter": {
+  "code": "R03",
+  "confidence": 0.9
+ },
+ "claude-opus-5-5|Address on proof does not match application address": {
+  "code": "R08",
+  "confidence": 0.88
+ },
+ "claude-opus-5-5|Address proof purana hai, naya bhejo": {
+  "code": "R08",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|Bank account holder name does not match PAN / business name": {
+  "code": "R03",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Bank account ka naam business se alag hai": {
+  "code": "R03",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|Bank verify nahi hua, account number dobara daalein": {
+  "code": "R04",
+  "confidence": 0.92
+ },
+ "claude-opus-5-5|Business category not supported by policy": {
+  "code": "R10",
+  "confidence": 0.9
+ },
+ "claude-opus-5-5|Business category selected differs from website content": {
+  "code": "R11",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Compliance review pending": {
+  "code": "R12",
+  "confidence": 0.3
+ },
+ "claude-opus-5-5|Declared products fall under restricted category": {
+  "code": "R10",
+  "confidence": 0.92
+ },
+ "claude-opus-5-5|Doc blurred and cropped, cannot verify": {
+  "code": "R05",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|Document clear nahi hai, dobara upload karein": {
+  "code": "R05",
+  "confidence": 0.9
+ },
+ "claude-opus-5-5|Document not readable. Resubmit": {
+  "code": "R05",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|GST certificate could not be validated against GSTIN entered": {
+  "code": "R02",
+  "confidence": 0.9
+ },
+ "claude-opus-5-5|GST certificate expired, please upload latest one": {
+  "code": "R02",
+  "confidence": 0.85
+ },
+ "claude-opus-5-5|GST number galat hai ya certificate purana hai": {
+  "code": "R02",
+  "confidence": 0.88
+ },
+ "claude-opus-5-5|GSTIN inactive / legal name mismatch with application": {
+  "code": "R02",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|IFSC/account number invalid or account inactive": {
+  "code": "R04",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Is business category ko support nahi kar sakte": {
+  "code": "R10",
+  "confidence": 0.85
+ },
+ "claude-opus-5-5|Missing policy pages (T&C / refund / contact) on website": {
+  "code": "R06",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Name on PAN card and business name different, pls check": {
+  "code": "R01",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|PAN ka naam aur application ka naam match nahi kar raha": {
+  "code": "R01",
+  "confidence": 0.85
+ },
+ "claude-opus-5-5|PAN name does not match and GST number is invalid": {
+  "code": "R01",
+  "confidence": 0.5
+ },
+ "claude-opus-5-5|PAN name does not match business name on application": {
+  "code": "R01",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Please check and resubmit": {
+  "code": "R05",
+  "confidence": 0.1
+ },
+ "claude-opus-5-5|Reviewer note: the merchant uploaded documents twice. The first upload was blurred and cropped at the corner. The second upload is clear but the address on the electricity bill is from 2019 and does not match the address on the application. Merchant called support twice asking what to do. Please ask for a recent address proof dated within the last 3 months.": {
+  "code": "R08",
+  "confidence": 0.92
+ },
+ "claude-opus-5-5|Sanctions screening hit, refer to compliance": {
+  "code": "R12",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Screening hit - refer compliance": {
+  "code": "R12",
+  "confidence": 0.93
+ },
+ "claude-opus-5-5|Signatory ka ID proof upload nahi hua": {
+  "code": "R09",
+  "confidence": 0.93
+ },
+ "claude-opus-5-5|Site requires login, cannot review products and prices": {
+  "code": "R07",
+  "confidence": 0.95
+ },
+ "claude-opus-5-5|Website does not display Terms, Privacy and Refund policy pages": {
+  "code": "R06",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Website khul nahi raha hai": {
+  "code": "R07",
+  "confidence": 0.9
+ },
+ "claude-opus-5-5|Website pe refund policy aur privacy policy nahi hai": {
+  "code": "R06",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|Ye business category allowed nahi hai": {
+  "code": "R10",
+  "confidence": 0.85
+ },
+ "claude-opus-5-5|पैन कार्ड पर नाम व्यवसाय के नाम से मेल नहीं खाता": {
+  "code": "R01",
+  "confidence": 0.97
+ },
+ "claude-opus-5-5|வங்கி கணக்கு பெயர் பொருந்தவில்லை": {
+  "code": "R03",
+  "confidence": 0.92
+ }
+}

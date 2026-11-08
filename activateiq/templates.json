@@ -1,0 +1,149 @@
+{
+ "_note": "Drafted once by Claude (Anthropic) in a single session; cached here and reused for every merchant. Only the catalog fix is used, nothing is invented per merchant. Tamil, Kannada and Marathi should be checked by a native speaker before real use.",
+ "languages": {
+  "English": {
+   "intro": "Hi! Your Razorpay application {app_id} needs one fix before it can go live.",
+   "cta": "Continue here: {resume_link}",
+   "R01": "The name on your PAN card doesn't match the business name you entered. Please upload the PAN whose name matches your application, or correct the business name so it matches your PAN.",
+   "R02": "We couldn't verify your GST details: the GSTIN may be wrong, inactive, or registered to a different legal name or address. Please enter the correct GSTIN, or upload a current GST certificate that matches your legal name and address.",
+   "R03": "The name on your bank account is different from your business or PAN name. Please add a current account in your business name (or the proprietor's name for a proprietorship), or upload a bank letter or cancelled cheque showing the matching name.",
+   "R04": "We couldn't verify your bank account: the account number or IFSC may be wrong, or the account may be inactive. Please re-enter the account number and IFSC carefully and check that the account is active and can receive money.",
+   "R05": "One of your documents couldn't be read because it is blurred, cropped or password-protected. Please re-upload a clear, full-page colour scan as PDF, JPG or PNG, under 5 MB.",
+   "R06": "Your website is missing some required pages: Terms & Conditions, Privacy Policy, Refund/Cancellation Policy or Contact details. Please add all four with working links and resubmit your website URL.",
+   "R07": "We couldn't view your website: it seems to be down, under construction or behind a login. Please make it publicly accessible with your products, prices and contact details visible, then resubmit.",
+   "R08": "Your address proof is missing, older than 3 months, or shows a different address. Please upload a recent utility bill, rent agreement or other valid address proof that matches your application address.",
+   "R09": "The ID of your authorised signatory or director is missing, or the details don't match the application. Please upload a valid ID of the authorised signatory and make sure the name and date of birth match.",
+   "R11": "The business category you selected looks different from what your website sells. Please select the correct category, or share a short note with evidence explaining your business model so we can review it again.",
+   "R13": "Hi! You started your Razorpay application {app_id} but stopped at the \"{step}\" step. Pick up where you left off: {resume_link}",
+   "CLOSE": "Thank you for your interest in Razorpay. After review, we are unable to support the products or services listed in application {app_id}, so this application has been closed. We're sorry we can't help this time.",
+   "REVIEW": "Thank you for your patience. Your application {app_id} is being reviewed by our team. We'll contact you if we need anything else.",
+   "LAST": "This is our final reminder for this application.",
+   "steps": {
+    "Business details": "Business details",
+    "KYC docs": "KYC documents",
+    "Bank verification": "Bank verification",
+    "Website/App review": "Website/App review"
+   }
+  },
+  "Hinglish": {
+   "intro": "Namaste! Aapki Razorpay application {app_id} ko live karne ke liye ek chhota sa fix chahiye.",
+   "cta": "Yahan se continue karein: {resume_link}",
+   "R01": "Aapke PAN card ka naam aur application mein diya business name match nahi kar raha. Please woh PAN upload karein jiska naam application se match kare, ya business name ko PAN ke hisaab se theek karein.",
+   "R02": "Aapki GST details verify nahi ho payi: GSTIN galat ya inactive ho sakta hai, ya kisi aur legal name ya address ka ho sakta hai. Please sahi GSTIN daalein, ya apne legal name aur address se match karta current GST certificate upload karein.",
+   "R03": "Aapke bank account ka naam business ya PAN ke naam se alag hai. Please business ke naam ka current account add karein (proprietorship ke liye proprietor ke naam ka), ya matching naam wala bank letter ya cancelled cheque upload karein.",
+   "R04": "Aapka bank account verify nahi ho paya: account number ya IFSC galat ho sakta hai, ya account inactive ho sakta hai. Please account number aur IFSC dhyan se dobara daalein aur check karein ki account active hai aur usmein paise aa sakte hain.",
+   "R05": "Aapka ek document padha nahi ja saka kyunki woh blurred, cropped ya password-protected hai. Please poore page ka clear colour scan PDF, JPG ya PNG mein (5 MB se kam) dobara upload karein.",
+   "R06": "Aapki website par kuch zaroori pages missing hain: Terms & Conditions, Privacy Policy, Refund/Cancellation Policy ya Contact details. Please chaaron pages working links ke saath add karein aur website URL dobara submit karein.",
+   "R07": "Hum aapki website dekh nahi paaye: woh down hai, under construction hai ya login maangti hai. Please website ko public rakhein, jisme products, prices aur contact details dikhein, phir dobara submit karein.",
+   "R08": "Aapka address proof missing hai, 3 mahine se purana hai, ya usmein alag address hai. Please recent utility bill, rent agreement ya koi aur valid address proof upload karein jo application ke address se match kare.",
+   "R09": "Authorised signatory ya director ki ID missing hai, ya details application se match nahi kar rahi. Please authorised signatory ki valid ID upload karein aur check karein ki naam aur date of birth match karein.",
+   "R11": "Aapki select ki hui business category website par bik rahe products se alag lag rahi hai. Please sahi category select karein, ya dobara review ke liye apne business model ko samjhane wala chhota note aur proof bhejein.",
+   "R13": "Namaste! Aapne apni Razorpay application {app_id} shuru ki thi, lekin woh \"{step}\" step par ruki hui hai. Jahan chhoda tha wahin se continue karein: {resume_link}",
+   "CLOSE": "Razorpay mein interest dikhane ke liye dhanyavaad. Review ke baad, hum application {app_id} mein bataye gaye products ya services ko support nahi kar sakte, isliye yeh application close kar di gayi hai. Is baar madad na kar paane ke liye humein khed hai.",
+   "REVIEW": "Aapke patience ke liye dhanyavaad. Aapki application {app_id} hamari team ke review mein hai. Agar humein kuch aur chahiye hoga toh hum aapse contact karenge.",
+   "LAST": "Is application ke liye yeh hamara last reminder hai.",
+   "steps": {
+    "Business details": "Business details",
+    "KYC docs": "KYC documents",
+    "Bank verification": "Bank verification",
+    "Website/App review": "Website/App review"
+   }
+  },
+  "Hindi": {
+   "intro": "नमस्ते! आपके Razorpay आवेदन {app_id} को लाइव करने के लिए एक सुधार ज़रूरी है।",
+   "cta": "यहाँ से आगे बढ़ें: {resume_link}",
+   "R01": "आपके PAN कार्ड का नाम आपके दर्ज किए गए व्यवसाय के नाम से मेल नहीं खाता। कृपया वह PAN अपलोड करें जिसका नाम आवेदन से मेल खाता हो, या व्यवसाय का नाम PAN के अनुसार ठीक करें।",
+   "R02": "आपका GST विवरण सत्यापित नहीं हो सका: GSTIN गलत या निष्क्रिय हो सकता है, या किसी दूसरे कानूनी नाम या पते का हो सकता है। कृपया सही GSTIN दर्ज करें, या अपने कानूनी नाम और पते से मेल खाता मौजूदा GST प्रमाणपत्र अपलोड करें।",
+   "R03": "आपके बैंक खाते का नाम आपके व्यवसाय या PAN के नाम से अलग है। कृपया अपने व्यवसाय के नाम (प्रोपराइटरशिप के लिए प्रोपराइटर के नाम) वाला चालू खाता जोड़ें, या मेल खाते नाम वाला बैंक पत्र या कैंसिल चेक अपलोड करें।",
+   "R04": "आपका बैंक खाता सत्यापित नहीं हो सका: खाता संख्या या IFSC गलत हो सकता है, या खाता निष्क्रिय हो सकता है। कृपया खाता संख्या और IFSC ध्यान से दोबारा दर्ज करें और जाँच लें कि खाता सक्रिय है और उसमें पैसे आ सकते हैं।",
+   "R05": "आपका एक दस्तावेज़ पढ़ा नहीं जा सका क्योंकि वह धुंधला, कटा हुआ या पासवर्ड से सुरक्षित है। कृपया पूरे पेज का साफ़ रंगीन स्कैन PDF, JPG या PNG में (5 MB से कम) दोबारा अपलोड करें।",
+   "R06": "आपकी वेबसाइट पर कुछ ज़रूरी पेज नहीं हैं: नियम और शर्तें (Terms & Conditions), गोपनीयता नीति (Privacy Policy), रिफ़ंड/रद्दीकरण नीति या संपर्क विवरण। कृपया चारों पेज काम करने वाले लिंक के साथ जोड़ें और वेबसाइट URL दोबारा सबमिट करें।",
+   "R07": "हम आपकी वेबसाइट नहीं देख पाए: वह बंद है, निर्माणाधीन है या लॉगिन माँगती है। कृपया वेबसाइट को सबके लिए खुला रखें, जिसमें उत्पाद, कीमतें और संपर्क विवरण दिखें, फिर दोबारा सबमिट करें।",
+   "R08": "आपका पते का प्रमाण नहीं है, 3 महीने से पुराना है, या उसमें अलग पता है। कृपया हाल का बिजली/पानी का बिल, किराया अनुबंध या कोई अन्य मान्य पते का प्रमाण अपलोड करें जो आवेदन के पते से मेल खाता हो।",
+   "R09": "अधिकृत हस्ताक्षरकर्ता या डायरेक्टर की ID नहीं है, या विवरण आवेदन से मेल नहीं खाते। कृपया अधिकृत हस्ताक्षरकर्ता की मान्य ID अपलोड करें और सुनिश्चित करें कि नाम और जन्मतिथि मेल खाते हों।",
+   "R11": "आपकी चुनी हुई व्यवसाय श्रेणी आपकी वेबसाइट पर बेचे जा रहे सामान से अलग लगती है। कृपया सही श्रेणी चुनें, या दोबारा समीक्षा के लिए अपने व्यवसाय मॉडल को समझाने वाला छोटा नोट और प्रमाण भेजें।",
+   "R13": "नमस्ते! आपने अपना Razorpay आवेदन {app_id} शुरू किया था, लेकिन वह \"{step}\" चरण पर रुका हुआ है। जहाँ छोड़ा था वहीं से आगे बढ़ें: {resume_link}",
+   "CLOSE": "Razorpay में रुचि दिखाने के लिए धन्यवाद। समीक्षा के बाद, हम आवेदन {app_id} में बताए गए उत्पादों या सेवाओं को सपोर्ट नहीं कर सकते, इसलिए यह आवेदन बंद कर दिया गया है। इस बार मदद न कर पाने के लिए हमें खेद है।",
+   "REVIEW": "आपके धैर्य के लिए धन्यवाद। आपका आवेदन {app_id} हमारी टीम की समीक्षा में है। अगर हमें कुछ और चाहिए होगा तो हम आपसे संपर्क करेंगे।",
+   "LAST": "इस आवेदन के लिए यह हमारा आख़िरी रिमाइंडर है।",
+   "steps": {
+    "Business details": "व्यवसाय विवरण",
+    "KYC docs": "KYC दस्तावेज़",
+    "Bank verification": "बैंक सत्यापन",
+    "Website/App review": "वेबसाइट/ऐप समीक्षा"
+   }
+  },
+  "Tamil": {
+   "intro": "வணக்கம்! உங்கள் Razorpay விண்ணப்பம் {app_id} நேரலைக்கு வர ஒரு திருத்தம் தேவை.",
+   "cta": "இங்கே தொடரவும்: {resume_link}",
+   "R01": "உங்கள் PAN அட்டையில் உள்ள பெயரும், நீங்கள் உள்ளிட்ட வணிகப் பெயரும் பொருந்தவில்லை. விண்ணப்பத்துடன் பொருந்தும் பெயருள்ள PAN-ஐப் பதிவேற்றவும், அல்லது PAN-க்கு ஏற்ப வணிகப் பெயரைத் திருத்தவும்.",
+   "R02": "உங்கள் GST விவரங்களைச் சரிபார்க்க முடியவில்லை: GSTIN தவறாகவோ, செயலற்றதாகவோ, அல்லது வேறு சட்டப் பெயர் அல்லது முகவரிக்கு உரியதாகவோ இருக்கலாம். சரியான GSTIN-ஐ உள்ளிடவும், அல்லது உங்கள் சட்டப் பெயர் மற்றும் முகவரியுடன் பொருந்தும் தற்போதைய GST சான்றிதழைப் பதிவேற்றவும்.",
+   "R03": "உங்கள் வங்கிக் கணக்கின் பெயர் உங்கள் வணிகம் அல்லது PAN பெயரிலிருந்து வேறுபடுகிறது. உங்கள் வணிகப் பெயரில் (தனியுரிமை நிறுவனமாக இருந்தால் உரிமையாளர் பெயரில்) உள்ள நடப்புக் கணக்கைச் சேர்க்கவும், அல்லது பொருந்தும் பெயருடன் வங்கிக் கடிதம் அல்லது ரத்து செய்யப்பட்ட காசோலையைப் பதிவேற்றவும்.",
+   "R04": "உங்கள் வங்கிக் கணக்கைச் சரிபார்க்க முடியவில்லை: கணக்கு எண் அல்லது IFSC தவறாக இருக்கலாம், அல்லது கணக்கு செயலற்றதாக இருக்கலாம். கணக்கு எண் மற்றும் IFSC-ஐக் கவனமாக மீண்டும் உள்ளிட்டு, கணக்கு செயலில் உள்ளதா, பணம் பெற முடியுமா என்பதைச் சரிபார்க்கவும்.",
+   "R05": "உங்கள் ஆவணங்களில் ஒன்றைப் படிக்க முடியவில்லை, ஏனெனில் அது மங்கலாகவோ, வெட்டப்பட்டோ, கடவுச்சொல்லால் பூட்டப்பட்டோ உள்ளது. முழுப் பக்கத்தின் தெளிவான வண்ண ஸ்கேனை PDF, JPG அல்லது PNG வடிவில் (5 MB-க்குள்) மீண்டும் பதிவேற்றவும்.",
+   "R06": "உங்கள் இணையதளத்தில் சில கட்டாயப் பக்கங்கள் இல்லை: Terms & Conditions, Privacy Policy, Refund/Cancellation Policy அல்லது தொடர்பு விவரங்கள். நான்கு பக்கங்களையும் செயல்படும் இணைப்புகளுடன் சேர்த்து, இணையதள URL-ஐ மீண்டும் சமர்ப்பிக்கவும்.",
+   "R07": "உங்கள் இணையதளத்தைப் பார்க்க முடியவில்லை: அது இயங்கவில்லை, கட்டுமானத்தில் உள்ளது, அல்லது உள்நுழைவு கேட்கிறது. பொருட்கள், விலைகள், தொடர்பு விவரங்கள் தெரியும்படி இணையதளத்தை அனைவரும் பார்க்கும்படி வைத்து, மீண்டும் சமர்ப்பிக்கவும்.",
+   "R08": "உங்கள் முகவரிச் சான்று இல்லை, 3 மாதங்களுக்கு மேல் பழையது, அல்லது வேறு முகவரியைக் காட்டுகிறது. விண்ணப்ப முகவரியுடன் பொருந்தும் சமீபத்திய மின்/நீர் கட்டண ரசீது, வாடகை ஒப்பந்தம் அல்லது வேறு செல்லுபடியான முகவரிச் சான்றைப் பதிவேற்றவும்.",
+   "R09": "அங்கீகரிக்கப்பட்ட கையொப்பதாரர் அல்லது இயக்குநரின் அடையாளச் சான்று இல்லை, அல்லது விவரங்கள் விண்ணப்பத்துடன் பொருந்தவில்லை. அங்கீகரிக்கப்பட்ட கையொப்பதாரரின் செல்லுபடியான அடையாளச் சான்றைப் பதிவேற்றி, பெயரும் பிறந்த தேதியும் பொருந்துவதை உறுதிசெய்யவும்.",
+   "R11": "நீங்கள் தேர்ந்தெடுத்த வணிக வகை, உங்கள் இணையதளத்தில் விற்கப்படுவதிலிருந்து வேறுபட்டதாகத் தெரிகிறது. சரியான வகையைத் தேர்ந்தெடுக்கவும், அல்லது மறுபரிசீலனைக்காக உங்கள் வணிக மாதிரியை விளக்கும் சிறு குறிப்பையும் ஆதாரத்தையும் பகிரவும்.",
+   "R13": "வணக்கம்! உங்கள் Razorpay விண்ணப்பம் {app_id}-ஐத் தொடங்கினீர்கள், ஆனால் அது \"{step}\" படியில் நிற்கிறது. நிறுத்திய இடத்திலிருந்தே தொடரவும்: {resume_link}",
+   "CLOSE": "Razorpay மீது ஆர்வம் காட்டியதற்கு நன்றி. மதிப்பாய்வுக்குப் பிறகு, விண்ணப்பம் {app_id}-இல் குறிப்பிட்ட பொருட்கள் அல்லது சேவைகளை எங்களால் ஆதரிக்க இயலாது, எனவே இந்த விண்ணப்பம் மூடப்பட்டது. இம்முறை உதவ முடியாததற்கு வருந்துகிறோம்.",
+   "REVIEW": "உங்கள் பொறுமைக்கு நன்றி. உங்கள் விண்ணப்பம் {app_id} எங்கள் குழுவின் மதிப்பாய்வில் உள்ளது. மேலும் ஏதேனும் தேவைப்பட்டால் உங்களைத் தொடர்புகொள்வோம்.",
+   "LAST": "இந்த விண்ணப்பத்திற்கான எங்கள் கடைசி நினைவூட்டல் இது.",
+   "steps": {
+    "Business details": "வணிக விவரங்கள்",
+    "KYC docs": "KYC ஆவணங்கள்",
+    "Bank verification": "வங்கிச் சரிபார்ப்பு",
+    "Website/App review": "இணையதளம்/செயலி மதிப்பாய்வு"
+   }
+  },
+  "Kannada": {
+   "intro": "ನಮಸ್ಕಾರ! ನಿಮ್ಮ Razorpay ಅರ್ಜಿ {app_id} ಲೈವ್ ಆಗಲು ಒಂದು ತಿದ್ದುಪಡಿ ಬೇಕಾಗಿದೆ.",
+   "cta": "ಇಲ್ಲಿಂದ ಮುಂದುವರಿಸಿ: {resume_link}",
+   "R01": "ನಿಮ್ಮ PAN ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ಹೆಸರು ಮತ್ತು ನೀವು ನಮೂದಿಸಿದ ವ್ಯವಹಾರದ ಹೆಸರು ಹೊಂದಾಣಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ಅರ್ಜಿಗೆ ಹೊಂದುವ ಹೆಸರಿನ PAN ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ಅಥವಾ PAN ಪ್ರಕಾರ ವ್ಯವಹಾರದ ಹೆಸರನ್ನು ಸರಿಪಡಿಸಿ.",
+   "R02": "ನಿಮ್ಮ GST ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: GSTIN ತಪ್ಪಾಗಿರಬಹುದು, ನಿಷ್ಕ್ರಿಯವಾಗಿರಬಹುದು, ಅಥವಾ ಬೇರೆ ಕಾನೂನು ಹೆಸರು ಅಥವಾ ವಿಳಾಸಕ್ಕೆ ಸೇರಿರಬಹುದು. ಸರಿಯಾದ GSTIN ನಮೂದಿಸಿ, ಅಥವಾ ನಿಮ್ಮ ಕಾನೂನು ಹೆಸರು ಮತ್ತು ವಿಳಾಸಕ್ಕೆ ಹೊಂದುವ ಪ್ರಸ್ತುತ GST ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
+   "R03": "ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಯ ಹೆಸರು ನಿಮ್ಮ ವ್ಯವಹಾರ ಅಥವಾ PAN ಹೆಸರಿಗಿಂತ ಭಿನ್ನವಾಗಿದೆ. ನಿಮ್ಮ ವ್ಯವಹಾರದ ಹೆಸರಿನಲ್ಲಿರುವ (ಏಕಮಾಲೀಕತ್ವವಾದರೆ ಮಾಲೀಕರ ಹೆಸರಿನಲ್ಲಿರುವ) ಚಾಲ್ತಿ ಖಾತೆಯನ್ನು ಸೇರಿಸಿ, ಅಥವಾ ಹೊಂದುವ ಹೆಸರಿರುವ ಬ್ಯಾಂಕ್ ಪತ್ರ ಅಥವಾ ರದ್ದುಪಡಿಸಿದ ಚೆಕ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
+   "R04": "ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಯನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: ಖಾತೆ ಸಂಖ್ಯೆ ಅಥವಾ IFSC ತಪ್ಪಾಗಿರಬಹುದು, ಅಥವಾ ಖಾತೆ ನಿಷ್ಕ್ರಿಯವಾಗಿರಬಹುದು. ಖಾತೆ ಸಂಖ್ಯೆ ಮತ್ತು IFSC ಅನ್ನು ಎಚ್ಚರಿಕೆಯಿಂದ ಮತ್ತೆ ನಮೂದಿಸಿ, ಖಾತೆ ಸಕ್ರಿಯವಾಗಿದೆಯೇ ಮತ್ತು ಹಣ ಸ್ವೀಕರಿಸಬಹುದೇ ಎಂದು ಪರಿಶೀಲಿಸಿ.",
+   "R05": "ನಿಮ್ಮ ಒಂದು ದಾಖಲೆಯನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ, ಏಕೆಂದರೆ ಅದು ಮಸುಕಾಗಿದೆ, ಕತ್ತರಿಸಲ್ಪಟ್ಟಿದೆ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್‌ನಿಂದ ರಕ್ಷಿತವಾಗಿದೆ. ಪೂರ್ಣ ಪುಟದ ಸ್ಪಷ್ಟ ಬಣ್ಣದ ಸ್ಕ್ಯಾನ್ ಅನ್ನು PDF, JPG ಅಥವಾ PNG ರೂಪದಲ್ಲಿ (5 MB ಒಳಗೆ) ಮತ್ತೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
+   "R06": "ನಿಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಕೆಲವು ಕಡ್ಡಾಯ ಪುಟಗಳು ಇಲ್ಲ: Terms & Conditions, Privacy Policy, Refund/Cancellation Policy ಅಥವಾ ಸಂಪರ್ಕ ವಿವರಗಳು. ನಾಲ್ಕೂ ಪುಟಗಳನ್ನು ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಲಿಂಕ್‌ಗಳೊಂದಿಗೆ ಸೇರಿಸಿ, ವೆಬ್‌ಸೈಟ್ URL ಅನ್ನು ಮತ್ತೆ ಸಲ್ಲಿಸಿ.",
+   "R07": "ನಿಮ್ಮ ವೆಬ್‌ಸೈಟ್ ನೋಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: ಅದು ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ, ನಿರ್ಮಾಣ ಹಂತದಲ್ಲಿದೆ, ಅಥವಾ ಲಾಗಿನ್ ಕೇಳುತ್ತದೆ. ಉತ್ಪನ್ನಗಳು, ಬೆಲೆಗಳು ಮತ್ತು ಸಂಪರ್ಕ ವಿವರಗಳು ಕಾಣುವಂತೆ ವೆಬ್‌ಸೈಟ್ ಅನ್ನು ಎಲ್ಲರಿಗೂ ತೆರೆದಿಡಿ, ನಂತರ ಮತ್ತೆ ಸಲ್ಲಿಸಿ.",
+   "R08": "ನಿಮ್ಮ ವಿಳಾಸ ಪುರಾವೆ ಇಲ್ಲ, 3 ತಿಂಗಳಿಗಿಂತ ಹಳೆಯದು, ಅಥವಾ ಬೇರೆ ವಿಳಾಸ ತೋರಿಸುತ್ತದೆ. ಅರ್ಜಿಯ ವಿಳಾಸಕ್ಕೆ ಹೊಂದುವ ಇತ್ತೀಚಿನ ವಿದ್ಯುತ್/ನೀರಿನ ಬಿಲ್, ಬಾಡಿಗೆ ಒಪ್ಪಂದ ಅಥವಾ ಇತರ ಮಾನ್ಯ ವಿಳಾಸ ಪುರಾವೆಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
+   "R09": "ಅಧಿಕೃತ ಸಹಿದಾರರು ಅಥವಾ ನಿರ್ದೇಶಕರ ಗುರುತಿನ ಚೀಟಿ ಇಲ್ಲ, ಅಥವಾ ವಿವರಗಳು ಅರ್ಜಿಗೆ ಹೊಂದುತ್ತಿಲ್ಲ. ಅಧಿಕೃತ ಸಹಿದಾರರ ಮಾನ್ಯ ಗುರುತಿನ ಚೀಟಿಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ಹೆಸರು ಮತ್ತು ಜನ್ಮ ದಿನಾಂಕ ಹೊಂದುತ್ತಿವೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿ.",
+   "R11": "ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ವ್ಯವಹಾರ ವರ್ಗವು ನಿಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಮಾರಾಟವಾಗುವುದಕ್ಕಿಂತ ಭಿನ್ನವಾಗಿ ಕಾಣುತ್ತದೆ. ಸರಿಯಾದ ವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ, ಅಥವಾ ಮರುಪರಿಶೀಲನೆಗಾಗಿ ನಿಮ್ಮ ವ್ಯವಹಾರ ಮಾದರಿಯನ್ನು ವಿವರಿಸುವ ಸಣ್ಣ ಟಿಪ್ಪಣಿ ಮತ್ತು ಪುರಾವೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ.",
+   "R13": "ನಮಸ್ಕಾರ! ನೀವು ನಿಮ್ಮ Razorpay ಅರ್ಜಿ {app_id} ಪ್ರಾರಂಭಿಸಿದ್ದೀರಿ, ಆದರೆ ಅದು \"{step}\" ಹಂತದಲ್ಲಿ ನಿಂತಿದೆ. ನೀವು ನಿಲ್ಲಿಸಿದ ಸ್ಥಳದಿಂದಲೇ ಮುಂದುವರಿಸಿ: {resume_link}",
+   "CLOSE": "Razorpay ಬಗ್ಗೆ ಆಸಕ್ತಿ ತೋರಿಸಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು. ಪರಿಶೀಲನೆಯ ನಂತರ, ಅರ್ಜಿ {app_id} ನಲ್ಲಿ ತಿಳಿಸಿರುವ ಉತ್ಪನ್ನಗಳು ಅಥವಾ ಸೇವೆಗಳನ್ನು ನಾವು ಬೆಂಬಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ಈ ಅರ್ಜಿಯನ್ನು ಮುಚ್ಚಲಾಗಿದೆ. ಈ ಬಾರಿ ಸಹಾಯ ಮಾಡಲು ಆಗದಿದ್ದಕ್ಕೆ ವಿಷಾದಿಸುತ್ತೇವೆ.",
+   "REVIEW": "ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಅರ್ಜಿ {app_id} ನಮ್ಮ ತಂಡದ ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ. ಇನ್ನೇನಾದರೂ ಬೇಕಾದರೆ ನಾವು ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸುತ್ತೇವೆ.",
+   "LAST": "ಈ ಅರ್ಜಿಗಾಗಿ ಇದು ನಮ್ಮ ಕೊನೆಯ ಜ್ಞಾಪನೆ.",
+   "steps": {
+    "Business details": "ವ್ಯವಹಾರ ವಿವರಗಳು",
+    "KYC docs": "KYC ದಾಖಲೆಗಳು",
+    "Bank verification": "ಬ್ಯಾಂಕ್ ಪರಿಶೀಲನೆ",
+    "Website/App review": "ವೆಬ್‌ಸೈಟ್/ಆ್ಯಪ್ ಪರಿಶೀಲನೆ"
+   }
+  },
+  "Marathi": {
+   "intro": "नमस्कार! तुमचा Razorpay अर्ज {app_id} लाइव्ह होण्यासाठी एक दुरुस्ती आवश्यक आहे.",
+   "cta": "इथून पुढे सुरू ठेवा: {resume_link}",
+   "R01": "तुमच्या PAN कार्डवरील नाव आणि तुम्ही दिलेले व्यवसायाचे नाव जुळत नाही. कृपया अर्जाशी जुळणाऱ्या नावाचे PAN अपलोड करा, किंवा PAN नुसार व्यवसायाचे नाव दुरुस्त करा.",
+   "R02": "तुमचे GST तपशील पडताळता आले नाहीत: GSTIN चुकीचा किंवा निष्क्रिय असू शकतो, किंवा दुसऱ्या कायदेशीर नावाचा किंवा पत्त्याचा असू शकतो. कृपया योग्य GSTIN भरा, किंवा तुमच्या कायदेशीर नावाशी आणि पत्त्याशी जुळणारे सध्याचे GST प्रमाणपत्र अपलोड करा.",
+   "R03": "तुमच्या बँक खात्यावरील नाव तुमच्या व्यवसायाच्या किंवा PAN वरील नावापेक्षा वेगळे आहे. कृपया व्यवसायाच्या नावाने (प्रोप्रायटरशिप असल्यास मालकाच्या नावाने) असलेले चालू खाते जोडा, किंवा जुळणारे नाव असलेले बँक पत्र किंवा रद्द केलेला चेक अपलोड करा.",
+   "R04": "तुमचे बँक खाते पडताळता आले नाही: खाते क्रमांक किंवा IFSC चुकीचा असू शकतो, किंवा खाते निष्क्रिय असू शकते. कृपया खाते क्रमांक आणि IFSC काळजीपूर्वक पुन्हा भरा आणि खाते सक्रिय असून त्यात पैसे जमा होऊ शकतात याची खात्री करा.",
+   "R05": "तुमचे एक कागदपत्र वाचता आले नाही, कारण ते अस्पष्ट, कापलेले किंवा पासवर्डने सुरक्षित आहे. कृपया पूर्ण पानाचे स्पष्ट रंगीत स्कॅन PDF, JPG किंवा PNG मध्ये (5 MB पेक्षा कमी) पुन्हा अपलोड करा.",
+   "R06": "तुमच्या वेबसाइटवर काही आवश्यक पाने नाहीत: Terms & Conditions, Privacy Policy, Refund/Cancellation Policy किंवा संपर्क तपशील. कृपया चारही पाने चालू लिंकसह जोडा आणि वेबसाइट URL पुन्हा सबमिट करा.",
+   "R07": "आम्हाला तुमची वेबसाइट पाहता आली नाही: ती बंद आहे, तयार होत आहे किंवा लॉगिन मागते. कृपया उत्पादने, किमती आणि संपर्क तपशील दिसतील अशी वेबसाइट सर्वांसाठी खुली करा, आणि मग पुन्हा सबमिट करा.",
+   "R08": "तुमचा पत्त्याचा पुरावा नाही, 3 महिन्यांपेक्षा जुना आहे, किंवा त्यावर वेगळा पत्ता आहे. कृपया अर्जातील पत्त्याशी जुळणारे अलीकडील वीज/पाणी बिल, भाडे करार किंवा इतर वैध पत्त्याचा पुरावा अपलोड करा.",
+   "R09": "अधिकृत स्वाक्षरीकर्ता किंवा संचालकाचे ओळखपत्र नाही, किंवा तपशील अर्जाशी जुळत नाहीत. कृपया अधिकृत स्वाक्षरीकर्त्याचे वैध ओळखपत्र अपलोड करा आणि नाव व जन्मतारीख जुळत असल्याची खात्री करा.",
+   "R11": "तुम्ही निवडलेली व्यवसाय श्रेणी तुमच्या वेबसाइटवर विकल्या जाणाऱ्या गोष्टींपेक्षा वेगळी दिसते. कृपया योग्य श्रेणी निवडा, किंवा पुन्हा तपासणीसाठी तुमचे व्यवसाय मॉडेल स्पष्ट करणारी छोटी नोंद आणि पुरावा पाठवा.",
+   "R13": "नमस्कार! तुम्ही तुमचा Razorpay अर्ज {app_id} सुरू केला होता, पण तो \"{step}\" टप्प्यावर थांबला आहे. जिथे थांबलात तिथूनच पुढे सुरू ठेवा: {resume_link}",
+   "CLOSE": "Razorpay मध्ये रस दाखवल्याबद्दल धन्यवाद. तपासणीनंतर, अर्ज {app_id} मध्ये नमूद केलेली उत्पादने किंवा सेवा आम्ही सपोर्ट करू शकत नाही, त्यामुळे हा अर्ज बंद करण्यात आला आहे. या वेळी मदत करू शकलो नाही याबद्दल आम्ही दिलगीर आहोत.",
+   "REVIEW": "तुमच्या संयमाबद्दल धन्यवाद. तुमचा अर्ज {app_id} आमच्या टीमच्या तपासणीत आहे. आणखी काही लागल्यास आम्ही तुमच्याशी संपर्क करू.",
+   "LAST": "या अर्जासाठी हे आमचे शेवटचे स्मरणपत्र आहे.",
+   "steps": {
+    "Business details": "व्यवसाय तपशील",
+    "KYC docs": "KYC कागदपत्रे",
+    "Bank verification": "बँक पडताळणी",
+    "Website/App review": "वेबसाइट/ॲप तपासणी"
+   }
+  }
+ }
+}
