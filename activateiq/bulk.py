@@ -35,8 +35,8 @@ GUIDE = {
     "days_since_last_activity": "Whole number, 0 or more",
     "attempts": "Whole number, 0 or more",
     "support_contacts": "Whole number, 0 or more (empty = 0)",
-    "rejection_code": "A code from the rejection catalog, R01 to R13",
-    "rejection_message": "Text from the reviewer",
+    "rejection_code": "The reviewer's reason code, R01 to R13 (see the rejection catalog)",
+    "rejection_message": "The reviewer's message",
 }
 
 

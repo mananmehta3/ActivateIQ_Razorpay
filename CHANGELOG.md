@@ -165,3 +165,8 @@ Made test files with tricky rows, ran them through the app, and wrote down what 
 - **Code on GitHub:** [mananmehta3/ActivateIQ_Razorpay](https://github.com/mananmehta3/ActivateIQ_Razorpay). Local files (added applications, decisions, confirmed reasons) are left out by `.gitignore`.
 - **Live app on Streamlit Community Cloud,** deployed from the GitHub repository. The saved AI model answers (`llm_answers.json`) are in the repository, so the live app needs no API key and costs nothing to run.
 - **Animated explainer video** made for the pitch. It introduces the problem and how ActivateIQ works.
+
+## Phase 11: Last UI changes (9 Nov)
+
+- **Upload page:** the upload box is now at the top, with the file instructions (columns, required or not, allowed values) below it.
+- **Clearer labels:** "Rejection code" and "Rejection message" are now "Reason code from the reviewer" and "Reviewer's message" on screen. Most of these applications are stalled, not rejected: only R10 and R12 cases have the status Rejected. The column names in the file stay `rejection_code` and `rejection_message`, to match the P3_Applications sheet.

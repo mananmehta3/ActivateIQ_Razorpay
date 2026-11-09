@@ -174,10 +174,10 @@ def confirm_reason(r, key):
     hold = r.get("hold") if isinstance(r.get("hold"), str) else ""
     if hold:
         given = r.rejection_code if isinstance(r.rejection_code, str) else "none"
-        st.info(f"**Reason code:** {given}  \n**Rejection message:** “{msg}”  \nOn hold: {hold}. Nothing is sent or "
+        st.info(f"**Reason code:** {given}  \n**Reviewer's message:** “{msg}”  \nOn hold: {hold}. Nothing is sent or "
                 "closed until a person chooses the reason.")
     else:
-        st.info(f"**Rejection message:** “{msg}”  \nThere is no reason code, so no message is written until a person "
+        st.info(f"**Reviewer's message:** “{msg}”  \nThere is no reason code, so no message is written until a person "
                 "confirms the reason.")
     if r.route == "Confirm reason":
         st.markdown(f"**Proposed reason:** {r.code} · {r.cause} ({r.diagnosis_source})")
@@ -197,7 +197,7 @@ def confirm_reason(r, key):
 
 def open_application(r, key):
     """One application, compact: nudge and buttons first, details underneath."""
-    meaning = CATALOG.loc[r.code, "plain_language_meaning"] if r.code in CATALOG.index else "The rejection message is not clear."
+    meaning = CATALOG.loc[r.code, "plain_language_meaning"] if r.code in CATALOG.index else "The reviewer's message is not clear."
     fix = CATALOG.loc[r.code, "standard_fix"] if r.code in CATALOG.index else "Check the application and decide the reason."
     name = r.get("business_name") if isinstance(r.get("business_name"), str) else None
     st.markdown(f"#### {r.application_id}{' · ' + name if name else ''}")
@@ -259,7 +259,7 @@ def open_application(r, key):
             st.rerun()
     with st.expander("Application details"):
         msg = r.rejection_message if isinstance(r.rejection_message, str) else "None"
-        st.markdown(f"**What it means:** {meaning}  \n**What the merchant must do:** {fix}  \n**Rejection message:** {msg}  \n"
+        st.markdown(f"**What it means:** {meaning}  \n**What the merchant must do:** {fix}  \n**Reviewer's message:** {msg}  \n"
                     f"**Step reached:** {r.step_reached} · **Days since last activity:** {int(r.days_since_last_activity)} · "
                     f"**Attempts:** {int(r.attempts)}  \n**Fixable:** {r.fixable} · **Recoverable:** {yn(r.recoverable)} · "
                     f"**WhatsApp opted in:** {r.whatsapp_opted_in}  \n**How the reason was found:** {r.evidence} ({r.diagnosis_source})")
@@ -457,11 +457,6 @@ elif page == "Add an application":
     one, many = st.tabs(["One application", "Upload a file (Excel or CSV)"])
     codes = [f"{k} · {v}" for k, v in CATALOG["reviewer_reason"].items() if k != "R13"]
     with many:
-        st.markdown("The file needs these columns. Rows with a missing required value, or a value that is not allowed, "
-                    "are not added: the app lists each such row and what to fix.")
-        st.dataframe(bulk.guide(), hide_index=True, use_container_width=True, height=598,
-                     column_config={"What it can hold": st.column_config.TextColumn(width="large")})
-        st.download_button("Download a sample file (CSV)", bulk.template().to_csv(index=False), "activateiq_upload_sample.csv")
         up = st.file_uploader("Upload file", type=["csv", "xlsx"], label_visibility="collapsed",
                               key=f"upload_{st.session_state.get('upload_n', 0)}")
         if up is not None:
@@ -493,6 +488,12 @@ elif page == "Add an application":
                         st.rerun()
         if st.session_state.get("bulk_added"):
             st.success(f"Added {st.session_state.pop('bulk_added')} applications. They are now in Applications.")
+        st.markdown("**What the file should look like**")
+        st.markdown("An Excel (.xlsx) or CSV file with one application per row and these columns. Rows with a missing "
+                    "required value, or a value that is not allowed, are not added: the app lists each such row and what to fix.")
+        st.dataframe(bulk.guide(), hide_index=True, use_container_width=True, height=598,
+                     column_config={"What it can hold": st.column_config.TextColumn(width="large")})
+        st.download_button("Download a sample file (CSV)", bulk.template().to_csv(index=False), "activateiq_upload_sample.csv")
     with one:
         with st.form("new_app"):
             business_name = st.text_input("Business name")
@@ -509,8 +510,8 @@ elif page == "Add an application":
             days_in = a.number_input("Days since last activity", min_value=0, value=None, step=1)
             attempts_in = b.number_input("Attempts", min_value=1, value=None, step=1)
             contacts = c.number_input("Support contacts", min_value=0, value=None, step=1)
-            code = st.selectbox("Rejection code (leave empty if there is none)", codes, index=None, placeholder="No rejection code")
-            msg = st.text_area("Rejection message (leave empty if there is none)")
+            code = st.selectbox("Reason code from the reviewer (leave empty if there is none)", codes, index=None, placeholder="No reason code")
+            msg = st.text_area("Reviewer's message (leave empty if there is none)")
             submitted = st.form_submit_button("Check application", type="primary")
         if submitted:
             required = {"Business type": business_type, "Preferred language": language, "WhatsApp opted in": whatsapp,
@@ -572,7 +573,7 @@ elif page == "How accurate is it":
     c[1].metric("Nudges with no dates, promises or waivers", f"{total - fails} of {total}")
     c[2].metric("Unsafe test nudges stopped", f"{len(caught[caught['issues'] != ''])} of {len(caught)}")
     st.markdown(f"""
-**Reason codes read correctly.** {ok} applications have both a rejection code and a rejection message. We hid the code, read the
+**Reason codes read correctly.** {ok} applications have both a reason code and a reviewer's message. We hid the code, read the
 message, and checked if we got the same code. The first version got 40 of 49 right; the mistakes are listed below, and we fixed them.
 
 **Nudges with no dates, promises or waivers.** Every nudge is checked before it can be approved: no dates, no promises, no waivers,
@@ -591,7 +592,7 @@ no compliance reasons, no workaround for restricted businesses, the merchant's p
         c[1].metric("AI model: code read correctly", f"{cs['ai_right']} of {cs['ai_answered']}")
         c[2].metric("Message-only cases where both agree", f"{cs['blank_agree']} of {cs['blank_cases']}")
         st.markdown(f"""
-**How we tested.** {cs['cases']} applications have both a rejection code and a rejection message. We hid the code and let each
+**How we tested.** {cs['cases']} applications have both a reason code and a reviewer's message. We hid the code and let each
 reader guess it from the message alone. The word rules were written while looking at these same messages, so their score is
 flattering; the AI model never saw them before, so its score is the fairer one.
 **How the app uses it.** For the {cs['blank_cases']} applications with only a message, both readers read it. If they agree, we keep
@@ -600,7 +601,7 @@ the code. If they disagree, a person decides (Manual review). The AI model never
         with st.expander(f"Messages where the two readers disagree ({len(diff)})"):
             st.dataframe(diff[["application_id", "test", "real_code", "word_rules", "ai_model", "rejection_message"]].rename(
                 columns={"application_id": "Application", "test": "Test", "real_code": "Real code", "word_rules": "Word rules",
-                         "ai_model": "AI model", "rejection_message": "Rejection message"}), hide_index=True, use_container_width=True)
+                         "ai_model": "AI model", "rejection_message": "Reviewer's message"}), hide_index=True, use_container_width=True)
     with st.expander("Mistakes in the first version"):
         st.markdown("- *GSTIN inactive / legal name mismatch* was read as a bank problem (R04) instead of GST (R02)\n"
                     "- *Document not readable* was missed (R05)\n- *Site requires login* was missed (R07)\n"
