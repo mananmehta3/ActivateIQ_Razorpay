@@ -120,7 +120,7 @@ A ChatGPT audit was checked against the brief and the Excel. Some points were ri
   - recoverable: 14 of 30;
   - action: 12 of 30.
 - **Why route and recoverable disagree** (the full list is on the How accurate is it page):
-  - **The 7 applications with no code and no message** were labelled "Manual review". The app treats them as R13, because the brief says these merchants "just stopped".
+  - **The 6 applications with no code and no message** were labelled "Manual review". The app treats them as R13, because the brief says these merchants "just stopped".
   - **The 3 message-only cases** (A3022, A3028, A3081) and A3051 were labelled "Manual review". The app holds them as "Confirm reason" until a person confirms.
   - **3 applications with 3 attempts** (A3015, A3020, A3072) were labelled recoverable. The app's rule is *fewer than* 3 attempts.
   - **R10 cases** were labelled "No" for recoverable. The app uses "Not applicable", because a restricted business is not fixable at all.
