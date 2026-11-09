@@ -11,6 +11,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from activateiq.classify import explain_hold
 from activateiq.evaluate import classifier_check, guardrail_tests, gold_check, rules_vs_ai, compare_summary, GOLD_CHOICES
 from activateiq import bulk
 from activateiq.load import load_config, load_data, ROOT
@@ -168,6 +169,21 @@ with tools.popover("↺ Reset"):
 CODE_CHOICES = [f"{k} · {v}" for k, v in CATALOG["reviewer_reason"].items() if k != "R13"]
 
 
+def ask_ai(r, key, hold):
+    """The AI model explains the note to the person deciding. Saved answers show straight away; new ones on request."""
+    why = hold or ("there is no reason code, only the reviewer's message" if r.route == "Confirm reason"
+                   else "the reviewer's message is unclear")
+    code = r.rejection_code if isinstance(r.rejection_code, str) else None
+    text, _ = explain_hold(code, r.rejection_message, why, CATALOG, BASE, allow_call=False)
+    if text is None and st.button("Ask the AI model to explain", key=f"ai_{key}_{r.application_id}"):
+        with st.spinner("The AI model is reading the note…"):
+            text, note = explain_hold(code, r.rejection_message, why, CATALOG, BASE)
+        if text is None:
+            st.caption(note)
+    if text:
+        st.success(f"**AI model (Claude) says:** {text}  \n*A person still chooses the reason below.*")
+
+
 def confirm_reason(r, key):
     """A reason read from a message is only a proposal: a person confirms it before any message or closure."""
     msg = r.rejection_message if isinstance(r.rejection_message, str) else "None"
@@ -179,8 +195,14 @@ def confirm_reason(r, key):
     else:
         st.info(f"**Reviewer's message:** “{msg}”  \nThere is no reason code, so no message is written until a person "
                 "confirms the reason.")
+    if isinstance(r.rejection_message, str) and r.rejection_message.strip():
+        ask_ai(r, key, hold)
     if r.route == "Confirm reason":
         st.markdown(f"**Proposed reason:** {r.code} · {r.cause} ({r.diagnosis_source})")
+        if "agree" in str(r.diagnosis_source):
+            st.caption("Read by the word rules and the AI model (Claude), and both agree. A person confirms before anything is sent.")
+        elif "AI model" in str(r.diagnosis_source):
+            st.caption("Read by the AI model (Claude). A person confirms before anything is sent.")
         if r.code == "R10":
             st.warning("If confirmed, this application will be closed. Confirm only if the business category is really "
                        "not supported.")

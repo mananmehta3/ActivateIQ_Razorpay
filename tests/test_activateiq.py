@@ -233,5 +233,65 @@ class EdgeCases(unittest.TestCase):
         self.assertEqual(keyword_classify("Aapka business category allowed nahi hai")[0], "R10")
 
 
+class LiveAI(unittest.TestCase):
+    """The AI model is mocked: these tests never call the API or touch llm_answers.json."""
+
+    def setUp(self):
+        import tempfile
+        from unittest import mock
+        from activateiq import classify
+        import shutil
+        from pathlib import Path
+        self.classify, self.tmp = classify, tempfile.TemporaryDirectory()
+        cache = Path(self.tmp.name) / "c.json"
+        if classify.CACHE.exists():  # start from the saved answers, so only new messages reach the (mocked) model
+            shutil.copy(classify.CACHE, cache)
+        self.patches = [mock.patch.object(classify, "CACHE", cache),
+                        mock.patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test"})]
+        for p in self.patches:
+            p.start()
+
+    def tearDown(self):
+        for p in self.patches:
+            p.stop()
+        self.tmp.cleanup()
+
+    def test_ai_reads_a_message_the_word_rules_cannot(self):
+        from unittest import mock
+        with mock.patch.object(self.classify, "_ask_claude", return_value=("R01", 0.9)) as ask:
+            df = run_with(_app("H1", rejection_code=None, rejection_message="पैन कार्ड पर नाम मेल नहीं खाता"))
+            r = row("H1", df)
+            self.assertEqual((r.code, r.route), ("R01", "Confirm reason"))  # a person still confirms
+            self.assertIn("AI model", r.diagnosis_source)
+            self.assertEqual(r.nudge_draft, "")
+            run_with(_app("H1", rejection_code=None, rejection_message="पैन कार्ड पर नाम मेल नहीं खाता"))
+            self.assertEqual(ask.call_count, 1)  # the saved answer is reused, not paid for twice
+
+    def test_ai_error_sends_the_case_to_a_person(self):
+        from unittest import mock
+        with mock.patch.object(self.classify, "_ask_claude", side_effect=RuntimeError("down")):
+            r = row("H2", run_with(_app("H2", rejection_code=None, rejection_message="பெயர் பொருந்தவில்லை")))
+            self.assertEqual(r.next_best_action, "Manual review")
+
+    def test_explanation_is_saved_and_reused(self):
+        from unittest import mock
+        with mock.patch.object(self.classify, "_ask_claude_text", return_value="It fits R05.") as ask:
+            first = self.classify.explain_hold("R10", "Document blurred", "code and message disagree", CATALOG, CFG)
+            again = self.classify.explain_hold("R10", "Document blurred", "code and message disagree", CATALOG, CFG,
+                                               allow_call=False)
+        self.assertEqual(first[0], "It fits R05.")
+        self.assertEqual(again[0], "It fits R05.")
+        self.assertEqual(ask.call_count, 1)
+
+    def test_no_key_means_no_call(self):
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"ANTHROPIC_API_KEY": ""}), \
+                mock.patch.object(self.classify, "_ask_claude_text") as ask:
+            text, note = self.classify.explain_hold("R10", "Document blurred", "x", CATALOG, CFG)
+        self.assertIsNone(text)
+        self.assertIn("not set up", note)
+        ask.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

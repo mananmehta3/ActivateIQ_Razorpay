@@ -170,3 +170,19 @@ Made test files with tricky rows, ran them through the app, and wrote down what 
 
 - **Upload page:** the upload box is now at the top, with the file instructions (columns, required or not, allowed values) below it.
 - **Clearer labels:** "Rejection code" and "Rejection message" are now "Reason code from the reviewer" and "Reviewer's message" on screen. Most of these applications are stalled, not rejected: only R10 and R12 cases have the status Rejected. The column names in the file stay `rejection_code` and `rejection_message`, to match the P3_Applications sheet.
+- **README rewritten:** it now starts with the problem and why ActivateIQ was built, and the results, tests and limits match the current app.
+
+## Phase 12: More AI, where it helps (9 Nov)
+
+Reviewed whether the app used enough AI. The rules-first design stays, because it is cheap, gives the same answer every time and is easy to check. Two gaps were found where the AI model clearly helps:
+- **The word rules cannot read Hindi or Tamil script.** In the edge-case test, T006 and T007 went to Manual review.
+- **Nothing "AI" happened live in the app.** It only used saved answers.
+
+**Added:**
+- **Live AI reading.** A reviewer's message on a new application is read by Claude straight away, in any language or script. The reason is proposed, and a person confirms it. If the AI model fails, the case goes to a person.
+- **"Ask the AI model to explain"** on every case waiting for a person. Claude gives up to 3 plain sentences on what the note means, which code fits and what to check. It is for the team only, and the person still decides.
+- **The app shows when the AI model read a message,** and whether it agreed with the word rules.
+
+**Cost:** about ₹1 per new message, paid once (answers are saved), with a spend limit on the Anthropic console. Expected total for the competition is under ₹100.
+
+**Tests:** 4 new tests, 35 in total. The AI model is replaced by a stand-in in the tests, so they never call the API or cost money.

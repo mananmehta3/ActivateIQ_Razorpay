@@ -140,3 +140,45 @@ def classify(text, catalog, cfg):
         return l_code, min(l_conf, 0.8), "AI model read the message (word rules found nothing)"
     cutoff = cfg["classifier"]["confidence_cutoff"]
     return code, min(conf, cutoff - 0.01), f"word rules say {code}, AI model says {l_code}: a person decides"
+
+
+EXPLAIN_SYSTEM = (
+    "You help a payments company's onboarding team. A merchant application is on hold because a person must choose "
+    "the reason before anything is sent to the merchant or the application is closed. Read the reviewer's note and "
+    "the reason code (if any), and explain in at most 3 short, plain sentences: what the note most likely means, which "
+    "catalog code it fits best and why, and what the person should check before deciding. Write for the onboarding "
+    "team, not the merchant. Use only the catalog codes given. Do not promise anything and do not make the decision.")
+
+
+def _ask_claude_text(system, prompt, model):
+    import anthropic
+
+    client = anthropic.Anthropic(max_retries=3)
+    resp = client.messages.create(model=model, max_tokens=2000, system=system, output_config={"effort": "low"},
+                                  messages=[{"role": "user", "content": prompt}])
+    if resp.stop_reason == "refusal":
+        raise RuntimeError("model declined")
+    return " ".join(b.text for b in resp.content if b.type == "text").strip()
+
+
+def explain_hold(code, text, why, catalog, cfg, allow_call=True):
+    """AI model explains a held case to the person deciding. Returns (explanation or None, note). Saved and reused."""
+    model = cfg["classifier"]["llm_model"]
+    cache, ck = _load_cache(), f"{model}|explain|{code or '-'}|{text}"
+    if ck in cache:
+        return cache[ck]["explanation"], "AI model"
+    if not allow_call:
+        return None, "not asked yet"
+    if cfg["classifier"].get("llm_provider", "claude") != "claude" or not os.environ.get("ANTHROPIC_API_KEY"):
+        return None, "The AI model is not set up on this copy of the app (no ANTHROPIC_API_KEY)."
+    prompt = (f"Catalog:\n{_codes_text(catalog)}\n\nReason code given: {code or 'none'}\n"
+              f"Reviewer's note: \"{text}\"\nWhy it is on hold: {why}")
+    try:
+        out = _ask_claude_text(EXPLAIN_SYSTEM, prompt, model)
+    except Exception as e:
+        return None, f"The AI model could not answer ({type(e).__name__}). Decide from the note and the catalog."
+    if not out:
+        return None, "The AI model gave no answer. Decide from the note and the catalog."
+    cache[ck] = {"explanation": out}
+    _save(cache)
+    return out, "AI model"

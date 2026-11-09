@@ -25,7 +25,7 @@ def diagnose(row, catalog, cfg):
         if text:  # second opinion on the text
             k_code, k_conf, _ = keyword_classify(text)
             if k_code and k_code != code and k_conf >= cfg["classifier"]["confidence_cutoff"]:
-                conflict = f"the code says {code} but the rejection message points to {k_code}"
+                conflict = f"the code says {code} but the reviewer's message points to {k_code}"
                 # A message about screening or a restricted category, or any doubt about a closure, goes to a person
                 # before anything is sent or closed.
                 if k_code in (RESTRICTED, COMPLIANCE) or code == RESTRICTED:

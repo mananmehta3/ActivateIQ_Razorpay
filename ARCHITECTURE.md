@@ -98,10 +98,25 @@ On the How accurate is it page, 5 deliberately bad messages are run through the 
 
 ## 3. The AI model (`classify.py`, `compare.py`)
 
-- **Model:** Claude (`claude-opus-5-5`, low effort). It must pick one of the catalog codes R01 to R12; it cannot make up a reason.
-- **Cost:** each message is sent once. Answers are saved in `llm_answers.json`, so the app runs without a key and without cost afterwards. The one-time run (`python -m activateiq.compare`) costs less than $1.
-- **Result on the Data Pack:** the AI model and the word rules agree on all 49 messages.
-- **If they disagree,** a person decides. The AI model never decides alone.
+The AI model is Claude (`claude-opus-5-5`, low effort). It has three jobs, and it never decides on its own.
+
+1. **Second reader of reviewer's messages.**
+   - It must pick one of the catalog codes R01 to R12, so it cannot make up a reason.
+   - On the Data Pack it agrees with the word rules on all 49 messages.
+   - If the two disagree, a person decides.
+2. **Live reading of new applications.**
+   - When someone adds an application with a reviewer's message, the AI model reads it straight away, in any language or script. This includes Hindi and Tamil script, which the word rules cannot read.
+   - The reason is proposed as "Confirm reason", and a person confirms it.
+   - If the AI model is not available, the case goes to Manual review.
+3. **Explaining a held case.**
+   - On any case waiting for a person, the "Ask the AI model to explain" button gives up to 3 plain sentences: what the note most likely means, which code fits best, and what to check.
+   - It is written for the onboarding team, never sent to the merchant. The person still chooses the reason.
+
+**Cost:**
+- Each message is sent once. Answers are saved in `llm_answers.json`, and saved answers show straight away at no cost.
+- One call costs about $0.01 (₹1).
+- Set a monthly spend limit on the Anthropic console.
+- Without a key, the app still works on saved answers and word rules.
 
 ## 4. Files
 
