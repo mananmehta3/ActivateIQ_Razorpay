@@ -1,5 +1,5 @@
 """Deterministic decision rules: evidence level, policy gate, fixable, recoverable, action, channel."""
-from .classify import classify, keyword_classify
+from .classify import classify, keyword_classify, llm_classify
 
 import re
 
@@ -14,7 +14,7 @@ RESTRICTED_WORDS = (r"cannabis|ganja|marijuana|\bweed\b|charas|hashish|narcotic|
 
 def restricted_hint(row):
     """The word that makes the business name or industry look like a restricted category, or None."""
-    for col in ("business_name", "industry"):
+    for col in ("business_name", "industry", "rejection_message"):
         m = re.search(RESTRICTED_WORDS, _txt(row.get(col)) or "", re.I)
         if m:
             return m.group(0)
@@ -41,6 +41,9 @@ def diagnose(row, catalog, cfg):
         evidence, conf, source = "Reason code given", 1.0, "looked up in rejection catalog"
         if text:  # second opinion on the text
             k_code, k_conf, _ = keyword_classify(text)
+            if not k_code and cfg["classifier"].get("use_llm_fallback"):
+                # Word rules found nothing (a typo, another language): the AI model reads it as a second opinion.
+                k_code, k_conf, _ = llm_classify(text, catalog, cfg)
             if k_code and k_code != code and k_conf >= cfg["classifier"]["confidence_cutoff"]:
                 conflict = f"the code says {code} but the reviewer's message points to {k_code}"
                 # A message about screening or a restricted category, or any doubt about a closure, goes to a person
@@ -54,7 +57,7 @@ def diagnose(row, catalog, cfg):
         evidence = "Read from rejection message" if code else "Could not read"
     hint = restricted_hint(row)
     if hint and code != RESTRICTED and not hold:
-        hold = f"the business name or industry mentions \"{hint}\", which may be a restricted category (R10)"
+        hold = f"the application mentions \"{hint}\", which may be a restricted category (R10)"
     dup = _txt(row.get("duplicate_of"))
     if dup and not hold:
         hold = f"possible duplicate of {dup} (same business name and phone)"

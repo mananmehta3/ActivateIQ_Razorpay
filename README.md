@@ -33,7 +33,7 @@ pip install -r requirements.txt
 streamlit run app.py              # the app
 python -m activateiq.pipeline     # runs all 75 non-activated applications and writes outputs/
 python -m activateiq.evaluate     # test results
-python -m unittest -v             # 39 automated checks
+python -m unittest -v             # 41 automated checks
 ```
 
 ## Pages in the app
@@ -134,7 +134,7 @@ Expected TPV is the merchant's own estimate of monthly volume, not recovered rev
 
 ## Tests
 
-`python -m unittest -v` runs 39 automated checks:
+`python -m unittest -v` runs 41 automated checks:
 - counts and TPV totals match the Data Pack;
 - R01, R05, R10, R12 and R13 handling;
 - message-only cases wait for a person;
@@ -149,7 +149,7 @@ Expected TPV is the merchant's own estimate of monthly volume, not recovered rev
 The AI model is Claude (`claude-opus-5-5`). It is never the one that decides.
 
 **What it does**
-1. **Second reader of reviewer's messages,** next to the word rules. It must pick one of the catalog codes. If the two disagree, a person decides. On the Data Pack they agree on 49/49.
+1. **Second reader of reviewer's messages,** next to the word rules. On applications that have a code, it reads the message when the word rules cannot (a typo or another language), to catch a hidden R10 or R12. It must pick one of the catalog codes. If the two disagree, a person decides. On the Data Pack they agree on 49/49.
 2. **Live reading of new applications.** A message added on screen or by upload is read straight away, in any language or script (Hindi, Tamil and so on). The reason is only proposed, and a person confirms it.
 3. **"Ask the AI model to explain"** on any case waiting for a person. It gives a short, plain explanation of the note and which code fits. It also checks the business name and industry for a restricted category (R10). It is for the onboarding team, never for the merchant.
 

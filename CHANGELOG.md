@@ -226,3 +226,14 @@ What was added:
 
 **Tests:** 2 new tests, 39 in total.
 
+## Phase 15: Catching misspelt and other-language warnings (9 Nov)
+
+A hand test found a gap: an application with code R07 (website not live) and the message "Website sells prohibeted goods" (misspelt) got a normal fix nudge. The word rules looked for "prohibited" exactly, so they missed it.
+
+**Fixed:**
+- **The word rules now match word stems and more words for R10:** "prohib…", "restrict…", "illegal", "banned" and "not permitted". The Data Pack score stays 49/49.
+- **The AI model is now a second reader on coded applications too.** When the word rules cannot read a message at all (a typo or another language), the AI model reads it. If it points to R10 or R12, the nudge is held for a person. The answer is saved, so each message is paid for once.
+- **The restricted-word check now covers the reviewer's message too,** as well as the business name and industry.
+
+**Tests:** 2 new tests, 41 in total.
+

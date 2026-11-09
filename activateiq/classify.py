@@ -19,7 +19,8 @@ CACHE = ROOT / "llm_answers.json"
 # Each rule: code -> list of patterns; all patterns in one inner list must match (AND), any list may match (OR).
 KEYWORD_RULES = {
     "R12": [[r"sanction"], [r"screening"], [r"negative list"], [r"watch ?list"], [r"compliance"]],
-    "R10": [[r"restricted"], [r"not supported"], [r"prohibited"], [r"not allowed"], [r"allowed nahi"], [r"nahi allowed"], [r"support nahi"]],
+    "R10": [[r"restrict"], [r"not supported"], [r"prohib"], [r"illegal"], [r"banned"], [r"not permitted"],
+            [r"not allowed"], [r"allowed nahi"], [r"nahi allowed"], [r"support nahi"]],
     "R11": [[r"category", r"differ|different|alag|mismatch"]],
     "R01": [[r"\bpan\b", r"naam|name", r"match|different|alag"]],
     "R03": [[r"bank|account", r"naam|name|holder", r"match|alag|different"]],

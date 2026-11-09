@@ -245,6 +245,11 @@ class EdgeCases(unittest.TestCase):
         df = run_with(_app("T7", business_name="Ravi Traders"), _app("T8", business_name="Ravi Traders"))
         self.assertNotEqual(row("T8", df).next_best_action, "Manual review")
 
+    def test_misspelt_prohibited_goods_is_held_not_nudged(self):
+        r = row("T11", run_with(_app("T11", rejection_code="R07", rejection_message="Website sells prohibeted goods")))
+        self.assertEqual(r.next_best_action, "Manual review")
+        self.assertEqual(r.nudge_draft, "")
+
     def test_restricted_looking_business_is_held_for_a_person(self):
         df = run_with(_app("T9", business_name="Royal Casino Games"),
                       _app("T10", business_name="Sharma Drug House", industry="Health & Pharmacy"))
@@ -320,6 +325,13 @@ class LiveAI(unittest.TestCase):
         self.assertIn("not in the catalog", note)
         with mock.patch.object(self.classify, "_ask_claude_text", return_value="x" * 1000):
             self.assertIsNone(self.classify.explain_hold(None, "Long", "unclear", CATALOG, CFG)[0])
+
+    def test_ai_second_opinion_on_a_coded_case_the_word_rules_cannot_read(self):
+        from unittest import mock
+        with mock.patch.object(self.classify, "_ask_claude", return_value=("R10", 0.9)):
+            r = row("H3", run_with(_app("H3", rejection_code="R07", rejection_message="वेबसाइट पर अवैध सामान बिकता है")))
+        self.assertEqual(r.next_best_action, "Manual review")  # the fix nudge is held for a person
+        self.assertIn("R10", r.human_check)
 
     def test_no_key_means_no_call(self):
         from unittest import mock
