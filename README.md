@@ -33,7 +33,7 @@ pip install -r requirements.txt
 streamlit run app.py              # the app
 python -m activateiq.pipeline     # runs all 75 non-activated applications and writes outputs/
 python -m activateiq.evaluate     # test results
-python -m unittest -v             # 35 automated checks
+python -m unittest -v             # 39 automated checks
 ```
 
 ## Pages in the app
@@ -51,7 +51,7 @@ python -m unittest -v             # 35 automated checks
   - **Send in bulk** approves simple nudges at once after showing them all, gives a send list (CSV) for the WhatsApp or email tool, and marks them as sent.
 - **Add an application:**
   - Enter one application, or upload an Excel or CSV file with many. The page shows the columns and allowed values.
-  - Rows with problems (missing values, values not allowed, negative or part numbers, existing IDs) are listed by row number and not added.
+  - Rows with problems are listed by row number and not added. Problems include missing values, values not allowed, negative or part numbers, numbers beyond believable limits (365 days, 10 attempts, 20 support contacts, ₹5,000 lakh), a city with digits, a bad phone number, an unreadable reviewer's message, and existing IDs. The single-application form uses the same checks.
   - A merchant already in the list (same business name and phone) is flagged.
 - **Why merchants stall:** the fixable reasons grouped, biggest first (the top systemic causes), and the product fix to ship first.
 - **How accurate is it:**
@@ -76,6 +76,7 @@ The full description is in [ARCHITECTURE.md](ARCHITECTURE.md).
    - Reviewer's message only (A3022, A3028, A3081, A3051) → word rules and an AI model (Claude) both read it. The reason is only a **proposal** until a person confirms it on screen. No message is written and nothing is closed before that.
    - Code and message disagree → if the message points to screening (R12) or a restricted category (R10), or the code is R10 and the message points to something else, a person decides first (**Manual review**).
    - The same merchant twice → the later copy goes to Manual review, so the merchant gets one message.
+   - A business name or industry that looks like a restricted category (ganja, casino, betting, weapons and so on) → Manual review. A person checks it for R10, and nothing is closed automatically.
 2. **Restricted and compliance cases first.**
    - **R10:** close politely, with no workaround. A person confirms first, because closing cannot be undone.
    - **R12:** route to compliance. The merchant is only told the application is under review.
@@ -133,7 +134,7 @@ Expected TPV is the merchant's own estimate of monthly volume, not recovered rev
 
 ## Tests
 
-`python -m unittest -v` runs 35 automated checks:
+`python -m unittest -v` runs 39 automated checks:
 - counts and TPV totals match the Data Pack;
 - R01, R05, R10, R12 and R13 handling;
 - message-only cases wait for a person;
@@ -150,7 +151,14 @@ The AI model is Claude (`claude-opus-5-5`). It is never the one that decides.
 **What it does**
 1. **Second reader of reviewer's messages,** next to the word rules. It must pick one of the catalog codes. If the two disagree, a person decides. On the Data Pack they agree on 49/49.
 2. **Live reading of new applications.** A message added on screen or by upload is read straight away, in any language or script (Hindi, Tamil and so on). The reason is only proposed, and a person confirms it.
-3. **"Ask the AI model to explain"** on any case waiting for a person. It gives a short, plain explanation of the note and which code fits. It is for the onboarding team, never for the merchant.
+3. **"Ask the AI model to explain"** on any case waiting for a person. It gives a short, plain explanation of the note and which code fits. It also checks the business name and industry for a restricted category (R10). It is for the onboarding team, never for the merchant.
+
+**Guardrails on the AI model**
+- It can only pick a catalog code.
+- The reviewer's note is treated as data, and any instructions inside it are ignored.
+- Its explanation is dropped if it names a code that is not in the catalog, or if it is too long.
+- If the AI model disagrees with the word rules, or fails, a person decides.
+- It never sends or closes anything.
 
 **Cost:**
 - Each message is paid for once, because answers are saved in `llm_answers.json`.

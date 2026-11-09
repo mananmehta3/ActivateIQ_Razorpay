@@ -1,5 +1,7 @@
 """Bulk add: check an uploaded CSV or Excel file of applications before adding them."""
 import math
+import re
+import unicodedata
 
 import pandas as pd
 
@@ -19,24 +21,62 @@ ALLOWED = {
     "application_status": ["Stalled", "Rejected"],
 }
 NUMBERS = {"expected_monthly_tpv_inr_lakh": float, "days_since_last_activity": int, "attempts": int, "support_contacts": int}
+# Highest believable values. The Data Pack's own maximums are much lower (40 days, 4 attempts, 3 contacts, Rs 59.9 lakh).
+MAXIMUM = {"expected_monthly_tpv_inr_lakh": 5000, "days_since_last_activity": 365, "attempts": 10, "support_contacts": 20}
+LABELS = {"expected_monthly_tpv_inr_lakh": "Expected monthly TPV", "days_since_last_activity": "Days since last activity",
+          "attempts": "Attempts", "support_contacts": "Support contacts"}
+# Industries used in the P3_Applications sheet, plus Other.
+INDUSTRIES = ["Apparel & Fashion", "Beauty & Wellness", "Books & Stationery", "Education / Coaching", "Electronics",
+              "Fitness & Sports", "Gifting & Festive", "Grocery & Food", "Health & Pharmacy", "Home & Furniture",
+              "SaaS / Digital Services", "Travel & Hospitality", "Other"]
+
+
+def _letters(text):
+    """Letters in any script (Hindi and Tamil vowel signs count too)."""
+    return sum(unicodedata.category(ch)[0] in "LM" for ch in text)
+
+
+def text_problems(row):
+    """Checks on the free-text fields. Returns a list of problems in plain words."""
+    errs = []
+    name = row.get("business_name")
+    if name and (len(name) < 2 or len(name) > 80 or _letters(name) < 2
+                 or any(not (unicodedata.category(c)[0] in "LMN" or c in " &'.,()/-") for c in name)):
+        errs.append("business_name must be 2 to 80 characters, with letters, and only & ' . , ( ) / - as symbols")
+    city = row.get("city")
+    if city and (len(city) < 2 or len(city) > 40 or any(not (unicodedata.category(c)[0] in "LM" or c in " .-") for c in city)):
+        errs.append("city must be a place name: letters, spaces, . or - only")
+    phone = row.get("phone")
+    if phone:
+        digits = re.sub(r"[\s\-()+]", "", re.sub(r"\.0+$", "", phone))
+        if digits.startswith("91") and len(digits) == 12:
+            digits = digits[2:]
+        if not re.fullmatch(r"[6-9]\d{9}", digits):
+            errs.append("phone must be a 10-digit Indian mobile number (it may start with +91)")
+    msg = row.get("rejection_message")
+    if msg:
+        chars = [c for c in msg if not c.isspace()]
+        if len(msg.split()) < 2 or len(msg) > 1000 or _letters(msg) < 0.6 * len(chars):
+            errs.append("rejection_message must be a readable note of at least 2 words (up to 1,000 characters)")
+    return errs
 
 GUIDE = {
     "application_id": "A new ID, e.g. A3101. Leave empty to get one (N0001, N0002, …)",
-    "business_name": "Text",
+    "business_name": "2 to 80 characters, with letters",
     "business_type": "One of: " + ", ".join(ALLOWED["business_type"]),
-    "industry": "Text",
-    "city": "Text",
+    "industry": "One of: " + ", ".join(INDUSTRIES),
+    "city": "A place name: letters, spaces, . or -",
     "preferred_language": "One of: " + ", ".join(ALLOWED["preferred_language"]),
-    "expected_monthly_tpv_inr_lakh": "Number, 0 or more (decimals allowed), e.g. 12.5",
+    "expected_monthly_tpv_inr_lakh": "Number from 0 to 5,000 (decimals allowed), e.g. 12.5",
     "whatsapp_opted_in": "Yes or No",
-    "phone": "Phone number",
+    "phone": "10-digit Indian mobile number, may start with +91",
     "step_reached": "One of: " + ", ".join(ALLOWED["step_reached"]),
     "application_status": "Stalled or Rejected",
-    "days_since_last_activity": "Whole number, 0 or more",
-    "attempts": "Whole number, 0 or more",
-    "support_contacts": "Whole number, 0 or more (empty = 0)",
+    "days_since_last_activity": "Whole number from 0 to 365",
+    "attempts": "Whole number from 0 to 10",
+    "support_contacts": "Whole number from 0 to 20 (empty = 0)",
     "rejection_code": "The reviewer's reason code, R01 to R13 (see the rejection catalog)",
-    "rejection_message": "The reviewer's message",
+    "rejection_message": "The reviewer's message: a readable note of at least 2 words",
 }
 
 
@@ -49,11 +89,11 @@ def guide():
 def template():
     """A sample file the operations team can fill in."""
     return pd.DataFrame([
-        {"application_id": "", "business_name": "Sharma Sweets", "business_type": "Proprietorship", "industry": "Food & Beverage",
+        {"application_id": "", "business_name": "Sharma Sweets", "business_type": "Proprietorship", "industry": "Grocery & Food",
          "city": "Jaipur", "preferred_language": "Hindi", "expected_monthly_tpv_inr_lakh": 18, "whatsapp_opted_in": "Yes",
          "phone": "9876543210", "step_reached": "KYC docs", "application_status": "Rejected", "days_since_last_activity": 6,
          "attempts": 1, "support_contacts": 0, "rejection_code": "R01", "rejection_message": ""},
-        {"application_id": "", "business_name": "Green Leaf Store", "business_type": "Partnership", "industry": "Retail",
+        {"application_id": "", "business_name": "Green Leaf Store", "business_type": "Partnership", "industry": "Other",
          "city": "Pune", "preferred_language": "Marathi", "expected_monthly_tpv_inr_lakh": 9.5, "whatsapp_opted_in": "No",
          "phone": "", "step_reached": "Bank verification", "application_status": "Stalled", "days_since_last_activity": 12,
          "attempts": 1, "support_contacts": 1, "rejection_code": "", "rejection_message": ""},
@@ -109,8 +149,17 @@ def check(raw, existing_ids, catalog_codes, start_number):
                     errs.append(f"{col} cannot be negative")
                 elif kind is int and x != int(x):
                     errs.append(f"{col} must be a whole number")
+                elif x > MAXIMUM[col]:
+                    errs.append(f"{col} cannot be more than {MAXIMUM[col]:,}")
                 else:
                     row[col] = kind(x)
+        if row["industry"] is not None:
+            match = {v.lower(): v for v in INDUSTRIES}.get(row["industry"].lower())
+            if match:
+                row["industry"] = match
+            else:
+                errs.append("industry must be one of the industries in the P3_Applications sheet, or Other")
+        errs += text_problems(row)
         if row["support_contacts"] is None:
             row["support_contacts"] = 0
         if row["rejection_code"] is not None:

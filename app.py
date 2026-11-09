@@ -174,10 +174,12 @@ def ask_ai(r, key, hold):
     why = hold or ("there is no reason code, only the reviewer's message" if r.route == "Confirm reason"
                    else "the reviewer's message is unclear")
     code = r.rejection_code if isinstance(r.rejection_code, str) else None
-    text, _ = explain_hold(code, r.rejection_message, why, CATALOG, BASE, allow_call=False)
+    msg = r.rejection_message if isinstance(r.rejection_message, str) else None
+    business = {k: r.get(k) for k in ("business_name", "business_type", "industry")}
+    text, _ = explain_hold(code, msg, why, CATALOG, BASE, allow_call=False, business=business)
     if text is None and st.button("Ask the AI model to explain", key=f"ai_{key}_{r.application_id}"):
-        with st.spinner("The AI model is reading the note…"):
-            text, note = explain_hold(code, r.rejection_message, why, CATALOG, BASE)
+        with st.spinner("The AI model is reading the application…"):
+            text, note = explain_hold(code, msg, why, CATALOG, BASE, business=business)
         if text is None:
             st.caption(note)
     if text:
@@ -195,7 +197,7 @@ def confirm_reason(r, key):
     else:
         st.info(f"**Reviewer's message:** “{msg}”  \nThere is no reason code, so no message is written until a person "
                 "confirms the reason.")
-    if isinstance(r.rejection_message, str) and r.rejection_message.strip():
+    if (isinstance(r.rejection_message, str) and r.rejection_message.strip()) or hold:
         ask_ai(r, key, hold)
     if r.route == "Confirm reason":
         st.markdown(f"**Proposed reason:** {r.code} · {r.cause} ({r.diagnosis_source})")
@@ -521,7 +523,7 @@ elif page == "Add an application":
             business_name = st.text_input("Business name")
             a, b, c = st.columns(3)
             business_type = a.selectbox("Business type", ["Proprietorship", "Private Limited", "Partnership", "LLP", "Trust / NGO"], index=None)
-            industry = b.text_input("Industry")
+            industry = b.selectbox("Industry", bulk.INDUSTRIES, index=None)
             city = c.text_input("City")
             language = a.selectbox("Preferred language", ["English", "Hinglish", "Hindi", "Tamil", "Kannada", "Marathi"], index=None)
             whatsapp = b.selectbox("WhatsApp opted in", ["Yes", "No"], index=None)
@@ -530,7 +532,7 @@ elif page == "Add an application":
             status = b.selectbox("Application status", ["Stalled", "Rejected"], index=None)
             tpv = c.number_input("Expected monthly TPV (₹ lakh)", min_value=0.0, value=None, step=0.1)
             days_in = a.number_input("Days since last activity", min_value=0, value=None, step=1)
-            attempts_in = b.number_input("Attempts", min_value=1, value=None, step=1)
+            attempts_in = b.number_input("Attempts", min_value=0, value=None, step=1)
             contacts = c.number_input("Support contacts", min_value=0, value=None, step=1)
             code = st.selectbox("Reason code from the reviewer (leave empty if there is none)", codes, index=None, placeholder="No reason code")
             msg = st.text_area("Reviewer's message (leave empty if there is none)")
@@ -540,8 +542,19 @@ elif page == "Add an application":
                         "Step reached": step, "Application status": status, "Expected monthly TPV": tpv,
                         "Days since last activity": days_in, "Attempts": attempts_in}
             missing = [k for k, v in required.items() if v is None]
+            # The same checks as a file upload, so both ways of adding refuse the same bad values.
+            limit_errs = [f"{bulk.LABELS[c]} cannot be more than {bulk.MAXIMUM[c]:,}" for c, v in
+                          [("expected_monthly_tpv_inr_lakh", tpv), ("days_since_last_activity", days_in),
+                           ("attempts", attempts_in), ("support_contacts", contacts)] if v is not None and v > bulk.MAXIMUM[c]]
+            text_errs = limit_errs + bulk.text_problems({"business_name": business_name.strip() or None,
+                                                         "city": city.strip() or None, "phone": phone.strip() or None,
+                                                         "rejection_message": msg.strip() or None})
             if missing:
                 st.error("Please fill in: " + ", ".join(missing))
+            elif text_errs:
+                st.error("Please fix these before adding:\n" + "\n".join(
+                    "- " + (lambda t: t[0].upper() + t[1:])(e.replace("rejection_message", "reviewer's message")
+                                                            .replace("business_name", "business name")) for e in text_errs))
             else:
                 existing = set(load_data(BASE)[0]["application_id"]) | set(added.get("application_id", []))
                 n = len(added) + 1

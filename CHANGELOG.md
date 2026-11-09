@@ -186,3 +186,43 @@ Reviewed whether the app used enough AI. The rules-first design stays, because i
 **Cost:** about ₹1 per new message, paid once (answers are saved), with a spend limit on the Anthropic console. Expected total for the competition is under ₹100.
 
 **Tests:** 4 new tests, 35 in total. The AI model is replaced by a stand-in in the tests, so they never call the API or cost money.
+
+## Phase 13: Refusing unbelievable values (9 Nov)
+
+Testing the form by hand showed it accepted values no real application would have: a city "4oiwejsn", 1,432 days inactive, 45 attempts, 34 support contacts, and a reviewer's message "gerdojf[paw".
+
+Both the form and file upload now use the same checks:
+- **Upper limits:** days since last activity up to 365, attempts up to 10, support contacts up to 20, and expected TPV up to ₹5,000 lakh. The Data Pack's own maximums are far lower (40 days, 4 attempts, 3 contacts, ₹59.9 lakh).
+- **Industry** is chosen from the 12 industries in the P3_Applications sheet, or Other.
+- **City** may contain only letters, spaces, . or -.
+- **Business name** must have letters, and only common symbols (& ' . , ( ) / -).
+- **Phone** must be a 10-digit Indian mobile number, and may start with +91.
+- **Reviewer's message** must be a readable note of at least 2 words. Hindi and Tamil script count as letters.
+
+**What cannot be checked:** a made-up name made only of letters, such as "jhfwo", looks like a real name to any rule. It is accepted, which is what a real onboarding form would do too.
+
+**Tests:** 2 new tests, 37 in total.
+
+## Phase 14: AI guardrails and restricted businesses (9 Nov)
+
+**Guardrails on the AI model:**
+
+What it already had:
+- It can only pick a code from the catalog list.
+- If it disagrees with the word rules, or fails, a person decides.
+- It never sends anything or closes anything.
+- A person confirms every reason it proposes.
+
+What was added:
+- **The reviewer's note is treated as data.** The model is told to ignore any instructions written inside the note, so a note cannot steer it.
+- **Its explanation is checked before anyone sees it.** An answer that names a code not in the catalog, or is too long, is dropped and not saved, and the person decides from the note.
+- **Explanations are for the onboarding team only,** never sent to the merchant.
+
+**Restricted businesses (R10):**
+- **The AI explanation now also looks at the business name, type and industry.** If they suggest drugs or other illegal substances, gambling, weapons or adult content, it says R10 may apply. It is told that a normal chemist or pharmacy is not restricted.
+- **A rule check on every application:** business names or industries with words like ganja, cannabis, narcotic, casino, betting, satta, lottery, weapon or firearm are held for Manual review.
+  - They are never closed automatically, because closing cannot be undone.
+  - "Drug" alone is not on the list, because many real chemists are called "… Drug House".
+
+**Tests:** 2 new tests, 39 in total.
+

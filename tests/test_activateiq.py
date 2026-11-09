@@ -194,6 +194,23 @@ class EdgeCases(unittest.TestCase):
         good, _ = self._upload(attempts="2.0", expected_monthly_tpv_inr_lakh="12.3456")
         self.assertEqual((good.iloc[0]["attempts"], good.iloc[0]["expected_monthly_tpv_inr_lakh"]), (2, 12.3456))
 
+    def test_upload_refuses_unbelievable_values(self):
+        good, problems = self._upload(business_name="jh#$", industry="uit08o", city="4oiwejsn",
+                                      days_since_last_activity="1432", attempts="45", support_contacts="34",
+                                      phone="12345", rejection_message="gerdojf[paw")
+        self.assertEqual(len(good), 0)
+        for word in ("business_name", "industry", "city", "days_since_last_activity cannot be more than 365",
+                     "attempts cannot be more than 10", "support_contacts cannot be more than 20", "phone",
+                     "rejection_message"):
+            self.assertIn(word, problems[0])
+
+    def test_upload_accepts_real_world_text(self):
+        good, problems = self._upload(business_name="Raju's Chai, Snacks & More (राजू)", city="Delhi NCR",
+                                      industry="grocery & food", phone="+91 98765 43210",
+                                      rejection_message="पैन कार्ड पर नाम मेल नहीं खाता")
+        self.assertEqual(problems, [])
+        self.assertEqual(good.iloc[0]["industry"], "Grocery & Food")
+
     def test_screening_message_holds_the_fix_nudge(self):
         df = run_with(_app("T1", rejection_code="R05", rejection_message="Sanctions screening hit, under review"),
                       _app("T2", rejection_code="R01", rejection_message="Business category is restricted"))
@@ -227,6 +244,15 @@ class EdgeCases(unittest.TestCase):
     def test_same_name_without_phone_is_not_a_duplicate(self):
         df = run_with(_app("T7", business_name="Ravi Traders"), _app("T8", business_name="Ravi Traders"))
         self.assertNotEqual(row("T8", df).next_best_action, "Manual review")
+
+    def test_restricted_looking_business_is_held_for_a_person(self):
+        df = run_with(_app("T9", business_name="Royal Casino Games"),
+                      _app("T10", business_name="Sharma Drug House", industry="Health & Pharmacy"))
+        r = row("T9", df)
+        self.assertEqual(r.next_best_action, "Manual review")   # held, never closed automatically
+        self.assertIn("restricted category", r.human_check)
+        self.assertEqual(r.nudge_draft, "")
+        self.assertNotEqual(row("T10", df).next_best_action, "Manual review")  # a chemist is not restricted
 
     def test_hinglish_allowed_nahi_reads_as_r10(self):
         from activateiq.classify import keyword_classify
@@ -282,6 +308,18 @@ class LiveAI(unittest.TestCase):
         self.assertEqual(first[0], "It fits R05.")
         self.assertEqual(again[0], "It fits R05.")
         self.assertEqual(ask.call_count, 1)
+
+    def test_explanation_sees_the_business_and_bad_answers_are_dropped(self):
+        from unittest import mock
+        biz = {"business_name": "Green Leaf Herbals", "business_type": "Proprietorship", "industry": "Other"}
+        with mock.patch.object(self.classify, "_ask_claude_text", return_value="This fits R99.") as ask:
+            text, note = self.classify.explain_hold(None, "Products not allowed", "unclear", CATALOG, CFG, business=biz)
+        self.assertIn("Green Leaf Herbals", ask.call_args[0][1])       # the model sees the business details
+        self.assertIn("illegal substances", ask.call_args[0][0])       # and is told to look for restricted ones
+        self.assertIsNone(text)                                        # an invented code is never shown
+        self.assertIn("not in the catalog", note)
+        with mock.patch.object(self.classify, "_ask_claude_text", return_value="x" * 1000):
+            self.assertIsNone(self.classify.explain_hold(None, "Long", "unclear", CATALOG, CFG)[0])
 
     def test_no_key_means_no_call(self):
         from unittest import mock

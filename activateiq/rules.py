@@ -1,7 +1,24 @@
 """Deterministic decision rules: evidence level, policy gate, fixable, recoverable, action, channel."""
 from .classify import classify, keyword_classify
 
+import re
+
 RESTRICTED, COMPLIANCE, ABANDONED = "R10", "R12", "R13"
+
+# Words in a business name or industry that suggest a restricted category (R10: "gambling or prohibited goods").
+# A match never closes anything: it only holds the case for a person. "Drug" alone is left out on purpose, because
+# many real chemists are called "... Drug House"; the AI model explanation looks at those.
+RESTRICTED_WORDS = (r"cannabis|ganja|marijuana|\bweed\b|charas|hashish|narcotic|cocaine|heroin|\bmdma\b|"
+                    r"gambl|betting|casino|\bsatta\b|lottery|firearm|weapon|ammunition|\bguns?\b|porn|escort")
+
+
+def restricted_hint(row):
+    """The word that makes the business name or industry look like a restricted category, or None."""
+    for col in ("business_name", "industry"):
+        m = re.search(RESTRICTED_WORDS, _txt(row.get(col)) or "", re.I)
+        if m:
+            return m.group(0)
+    return None
 
 
 def _txt(v):
@@ -35,6 +52,9 @@ def diagnose(row, catalog, cfg):
     else:
         code, conf, source = classify(text, catalog, cfg)
         evidence = "Read from rejection message" if code else "Could not read"
+    hint = restricted_hint(row)
+    if hint and code != RESTRICTED and not hold:
+        hold = f"the business name or industry mentions \"{hint}\", which may be a restricted category (R10)"
     dup = _txt(row.get("duplicate_of"))
     if dup and not hold:
         hold = f"possible duplicate of {dup} (same business name and phone)"

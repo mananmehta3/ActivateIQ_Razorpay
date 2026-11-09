@@ -110,7 +110,17 @@ The AI model is Claude (`claude-opus-5-5`, low effort). It has three jobs, and i
    - If the AI model is not available, the case goes to Manual review.
 3. **Explaining a held case.**
    - On any case waiting for a person, the "Ask the AI model to explain" button gives up to 3 plain sentences: what the note most likely means, which code fits best, and what to check.
+   - It also looks at the business name, type and industry, and says when R10 may apply (drugs or other illegal substances, gambling, weapons, adult content).
    - It is written for the onboarding team, never sent to the merchant. The person still chooses the reason.
+
+**Guardrails:**
+- Output is limited to catalog codes.
+- The note is treated as data, and any instructions inside it are ignored.
+- An explanation that names an unknown code, or is too long, is dropped.
+- Errors and disagreements go to a person.
+- The AI model never sends or closes anything.
+
+A rule check also holds any application whose business name or industry looks like a restricted category (Manual review).
 
 **Cost:**
 - Each message is sent once. Answers are saved in `llm_answers.json`, and saved answers show straight away at no cost.
